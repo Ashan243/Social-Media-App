@@ -12,6 +12,7 @@ const router = express.Router()
 const {userModel, validation} = require("../Model/usermodel")
 const userAuth = require("../Middleware/usermiddleware")
 const {randomNumber} = require("../utils/helperfuctions")
+const { staffModel, staffValidation } = require("../Model/staffmodel")
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 
@@ -192,6 +193,26 @@ app.post("/api/sendsms", async(req, res) =>{
 })
 
 
+app.delete("/api/deleteuser", async(req, res) =>{
+
+    const {error} = staffValidation(req.body)
+    if (error) return res.status(400).send("Invalid Data")
+
+    
+    const deleteUser = await findOneAndDelete({username: req.body.username})
+    if (!deleteUser) return res.status(400).json({
+
+        message: "Failed To Delete Username"
+    })
+
+    res.status(200).json({
+
+        message: "User Successfully Deleted"
+    })
+
+    
+
+})
 
 const port = process.env.PORT || 4001
 app.listen(port, () => console.log(`You are connected to Port ${port}`))
