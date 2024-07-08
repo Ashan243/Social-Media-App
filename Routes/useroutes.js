@@ -207,7 +207,8 @@ app.delete("/api/deleteuser", async(req, res) =>{
 
     res.status(200).json({
 
-        message: "User Successfully Deleted"
+        message: "User Successfully Deleted",
+        status: 200
     })
 
     
