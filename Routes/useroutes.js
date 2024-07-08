@@ -176,6 +176,22 @@ app.post("/api/verifyCode", async(req, res) => {
 })
 
 
+app.post("/api/sendsms", async(req, res) =>{
+
+    const accountSid = 'AC07c34f797ac363ba1341d493099f5529';
+    const authToken = 'c1ba6bdcd5e9c47241242ea9454ca2b1';
+    const client = require('twilio')(accountSid, authToken);
+
+    client.verify.v2.services("VA9682d7f2af510b0eece224ae9944cd55")
+        .verifications
+        .create({to: req.body.phoneNumber , channel: 'sms'})
+        .then(verification => console.log(verification.sid));
+
+    
+
+})
+
+
 
 const port = process.env.PORT || 4001
 app.listen(port, () => console.log(`You are connected to Port ${port}`))
