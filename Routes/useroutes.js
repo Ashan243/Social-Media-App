@@ -1,3 +1,6 @@
+// github url - https://github.com/Ashan243/Social-Media-App.git
+
+
 
 const nodemailer = require("nodemailer")
 const dotenv = require("dotenv")
@@ -11,7 +14,7 @@ const app = express()
 const router = express.Router()
 const {userModel, validation} = require("../Model/usermodel")
 const userAuth = require("../Middleware/usermiddleware")
-const {randomNumber} = require("../utils/helperfuctions")
+const {randomNumber} = require("../utils/helperfunctions")
 const { staffModel, staffValidation } = require("../Model/staffmodel")
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
@@ -193,7 +196,7 @@ app.post("/api/sendsms", async(req, res) =>{
 })
 
 
-app.delete("/api/deleteuser", async(req, res) =>{
+app.delete("/api/deletebyuser", async(req, res) =>{
 
     const {error} = staffValidation(req.body)
     if (error) return res.status(400).send("Invalid Data")
@@ -215,5 +218,5 @@ app.delete("/api/deleteuser", async(req, res) =>{
 
 })
 
-const port = process.env.PORT || 4001
+const port = process.env.PORT || 4002
 app.listen(port, () => console.log(`You are connected to Port ${port}`))

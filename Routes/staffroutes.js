@@ -4,7 +4,7 @@ const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
 const mongoose = require("mongoose")
 const {staffModel,staffValidation} = require("../Model/staffmodel")
-const {randomNumber} = require("../utils/helperfuctions")
+const {randomNumber} = require("../utils/helperfunctions")
 const nodemailer = require("nodemailer")
 const app = express()
 
