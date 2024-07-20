@@ -7,6 +7,7 @@ const {staffModel,staffValidation} = require("../Model/staffmodel")
 const {randomNumber} = require("../utils/helperfunctions")
 const nodemailer = require("nodemailer")
 const app = express()
+const multer = require("")
 
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
@@ -17,6 +18,9 @@ mongoose.connect("mongodb://localhost:27017")
 .catch(err => console.log(err))
 
 let userCode = ""
+
+
+const diskStorage = 
 
 
 app.post("api/staffsignup", async(req, res) =>{
@@ -128,6 +132,12 @@ app.post("/api/sendToPhone", (req, res) =>{
 
     
 })
+
+
+//
+app.post(
+
+)
 
 
 app.put("/api/updatestaff/:password", async(req, res) =>{

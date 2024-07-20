@@ -5,6 +5,7 @@
 const nodemailer = require("nodemailer")
 const dotenv = require("dotenv")
 const express = require("express")
+const multer = require("multer")
 const mongoose = require("mongoose")
 const jwt = require("jsonwebtoken")
 const joi = require("joi")
@@ -34,6 +35,45 @@ mongoose.connect("mongodb://localhost:27017")
 let userCode = ""
 
 
+//Multer Storage
+const diskStorage = multer.diskStorage({
+
+    destination: function(req, file, cb){
+        if(file.mimetype.startsWith("image/")){
+            cb(null, "images/userimages")
+        }
+
+        else if(file.mimetype.startsWith("video/")){
+            cb(null, "videos/uservideo")
+        }
+        else {
+            cb(new Error("Mime type not supported"))
+        },
+        filename: function(req, file, cb){
+            cb(null, file.filename)
+        }
+
+        //Unit Test
+        //describe("Testing to send unallowed data", {
+        // expect("")}
+    }
+
+})
+
+const upload = multer({
+    storage: diskStorage,
+
+})
+
+
+app.post("/api/uploadimages", upload.array("images", 3), (req, res) => {
+
+    res.status(200).json({
+
+        message: "Image Successfully Upload",
+        timestamp: Date.now()
+    })
+})
 
 app.post("/api/signup", async(req, res) =>{
 
@@ -217,6 +257,21 @@ app.delete("/api/deletebyuser", async(req, res) =>{
     
 
 })
+
+//Patching
+app.patch()
+
+//PUT
+//PATCH
+const user = {
+    name: "Ashan",
+    id: 152,
+    location: "London"
+}
+
+
+
+
 
 const port = process.env.PORT || 4002
 app.listen(port, () => console.log(`You are connected to Port ${port}`))
