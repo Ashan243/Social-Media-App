@@ -4,14 +4,16 @@ const bcrypt = require("bcrypt")
 const nodemailer = require("nodemailer")
 const {randomNumber} = require("../utils/randomnumbergen")
 const client = require('twilio')(process.env.TWILLO_ACCOUND_SID, process.env.TWILLO_AUTH_TOKEN)
-
-
+const app = express()
+const express = require("express")
+const debug = require("debug")(apiDebug)
+const constants = require("../config/constants")
 
 
 let userCode = ""
 
 
-app.post("/api/signup", async(req, res) =>{
+app.post("/signup", async(req, res) =>{
 
     const {error} = validation(req.body)
     if (error) return res.status(400).send("Invalid Data")
@@ -33,7 +35,7 @@ app.post("/api/signup", async(req, res) =>{
 
     await userDetails.save()
     const token = userDetails.createToken()
-    res.header("x-auth-users", token).status(200).json({
+    res.header(constants.default.jwt_header, token).status(200).json({
         message: "Token Recieved"
     })
 
@@ -41,7 +43,7 @@ app.post("/api/signup", async(req, res) =>{
 
 
 
-app.post("/api/login", async(req, res) =>{
+app.post("/login", async(req, res) =>{
 
     const {error} = validation(req.body)
     if (error) return res.status(400).send("Invalid Data")
@@ -59,7 +61,8 @@ app.post("/api/login", async(req, res) =>{
 
 
 
-app.post("/api/sendCode", async(req, res) =>{
+
+app.post("/sendCode", async(req, res) =>{
 
     const {error} = validation(req.body)
     if (error) return res.status(400).send("Invalid Data")
@@ -97,7 +100,7 @@ app.post("/api/sendCode", async(req, res) =>{
         
 })
 
-app.post("/api/verifyCode", async(req, res) => {
+app.post("/verifyCode", async(req, res) => {
 
     userCode = randomNumber()
     //1. Verify whether the users 6 digitcode is the same as one we just sent
@@ -113,10 +116,10 @@ app.post("/api/verifyCode", async(req, res) => {
 })
 
 
-app.post("/api/sendsms", async(req, res) =>{
+app.post("/sendsms", async(req, res) =>{
 
     
-    
+
 
     client.verify.v2.services("VA9682d7f2af510b0eece224ae9944cd55")
         .verifications

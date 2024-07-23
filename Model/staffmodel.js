@@ -30,7 +30,8 @@ const staffSchema = mongoose.Schema({
 
 staffSchema.methods.createToken = function(){
 const accessToken = jwt.sign({_id: this._id}, "privatekey")
-return accessToken}
+return accessToken
+}
 
 
 const staffModel = mongoose.model("project_staff", staffSchema)

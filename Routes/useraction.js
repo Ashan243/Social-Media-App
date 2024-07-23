@@ -33,11 +33,15 @@ mongoose.connect("mongodb://localhost:27017")
 //5. Verify the 6 digit-code is correct for further actions
 
 
+app.get("/homepage", async(req, res) => {
+
+    res.send("Welcome To The Homepage")
+
+})
 
 
 
-
-app.put("/api/update/:username", async(req, res) =>{
+app.put("/update/:username", async(req, res) =>{
 
     
     
@@ -53,32 +57,7 @@ app.put("/api/update/:username", async(req, res) =>{
 })
 
 
-
-
-
-
-app.delete("/api/deleteuser", async(req, res) =>{
-        
-    const deleteUser = await userModel.findOneAndDelete({email: req.body.email})
-    if(!deleteUser) return res.status(400).send("Failed To Delete User")
-        
-    try {
-        
-         res.status(200).send("Sucessfully Deleted")
-
-    } catch(err) {
-            
-        res.status(400).send(`Error: ${err}`)
-
-        }
-
-})
-
-
-
-
-
-app.delete("/api/deletebyuser", async(req, res) =>{
+app.delete("/deletebyuser", async(req, res) =>{
 
     const {error} = staffValidation(req.body)
     if (error) return res.status(400).send("Invalid Data")
@@ -100,16 +79,16 @@ app.delete("/api/deletebyuser", async(req, res) =>{
 
 })
 
-//Patching
-app.patch()
+// //Patching
+// app.patch()
 
-//PUT
-//PATCH
-const user = {
-    name: "Ashan",
-    id: 152,
-    location: "London"
-}
+// //PUT
+// //PATCH
+// const user = {
+//     name: "Ashan",
+//     id: 152,
+//     location: "London"
+// }
 
 
 
