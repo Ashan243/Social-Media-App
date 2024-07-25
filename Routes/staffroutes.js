@@ -47,7 +47,7 @@ app.post("api/staffsignup", async(req, res) =>{
     const token = staffDetails.createToken()
     res.header("x-auth-staff").json({
 
-        message: "Token Recived"
+        message: "Token Received"
     })
 
 })
