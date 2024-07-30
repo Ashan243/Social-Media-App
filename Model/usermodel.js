@@ -5,7 +5,7 @@ const joi = require("joi")
 
 
 
-const userSchema = mongoose.Schema({
+const userSchema = new mongoose.Schema({
 
     email:{
         type: String,
@@ -29,7 +29,7 @@ const userSchema = mongoose.Schema({
         minLength: 8,
         maxLength: 29,
         unique: true
-    },
+    }
 
 })
 

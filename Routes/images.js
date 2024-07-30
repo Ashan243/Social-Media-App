@@ -1,6 +1,6 @@
 const {upload} = require("../utils/storage")
-const app = express()
 const express = require("express")
+const app = express()
 
 app.post("/uploadimages", upload.array("images", 3), (req, res) => {
     if(!req.body.file) return res.status(400).send("Files Not Found")
@@ -23,3 +23,6 @@ app.post("/uploadimage", upload.single("image") , async(req,res) =>{
     })
 
 })
+
+
+

@@ -7,7 +7,7 @@ const userAction = require("../Routes/useraction")
 const cors = require("cors")
 const urlencoded = require("body-parser/lib/types/urlencoded")
 const app = express()
-
+// require("../")
 
 module.exports = function(app){
 

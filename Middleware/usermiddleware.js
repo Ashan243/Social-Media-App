@@ -1,12 +1,12 @@
 const config = require("config")
 const jwt = require("jsonwebtoken")
 const mongoose = require("mongoose")
-const constants = require("../config/constants")
+const constants = require("../config/constants.js")
 
 
 module.exports = function userAuth(req, res, next){
 
-    const userToken = req.header(constants.default.jwt_header)
+    const userToken = req.header(constants.default.JWT_HEADER)
     if(!userToken) return res.status(403).send("Access Denied")
 
     try {

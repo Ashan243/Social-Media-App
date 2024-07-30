@@ -1,6 +1,6 @@
 const mongoose = require("mongoose")
 const config = require("config")
-const { default: constants } = require("../config/constants")
+const constants = require("../config/constants.js")
 const dbDebug = require("debug")("app: database")
 
 

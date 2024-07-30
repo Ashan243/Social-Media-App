@@ -24,7 +24,11 @@ const diskStorage = multer.diskStorage({
         // expect("")}
     })
 
-export const upload = multer({
+ const upload = multer({
     storage: diskStorage,
 
 })
+
+exports.upload = upload
+exports.diskStorage = diskStorage
+

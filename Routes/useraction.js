@@ -66,7 +66,8 @@ app.delete("/deletebyuser", async(req, res) =>{
     const deleteUser = await findOneAndDelete({username: req.body.username})
     if (!deleteUser) return res.status(400).json({
 
-        message: "Failed To Delete Username"
+        message: "Failed To Delete Username",
+        timestamp: Date.now()
     })
 
     res.status(200).json({
