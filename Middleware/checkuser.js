@@ -3,6 +3,9 @@ const localStorage = require("local-storage")
 const constants = require("../config/constants")
 module.exports = function(){
 
-    localStorage.get(constants.default.jwt_header)
+    let header = localStorage.get(constants.JWT_HEADER)
+    if(header){
+        console.log("Access Grandted")
+    }
 
 }

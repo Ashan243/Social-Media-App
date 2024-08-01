@@ -4,7 +4,7 @@ module.exports = validation = (users) =>{
     const schema = joi.object({
 
         email: joi.string().min(8).max(29).required(),
-        password: joi.string().min(8).max(255).required(),
+        password: joi.string().min(8).max(255),
         username: joi.string().min(8).max(29)
     })
 

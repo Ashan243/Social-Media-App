@@ -1,3 +1,4 @@
+require("dotenv").config()
 
 const joi = require("joi")
 const mongoose = require("mongoose")
@@ -5,7 +6,7 @@ const validation = require("../utils/validation")
 const {userModel} = require("../Model/usermodel")
 const bcrypt = require("bcrypt")
 const nodemailer = require("nodemailer")
-const {randomNumber} = require("../utils/randomnumbergen")
+const {randomNumberFunction} = require("../utils/randomnumbergen")
 // const client = require('twilio')(process.env.TWILLO_ACCOUNT_SID, process.env.TWILLO_AUTH_TOKEN)
 const accountSid = 'AC07c34f797ac363ba1341d493099f5529';
 const authToken = 'c1ba6bdcd5e9c47241242ea9454ca2b1';
@@ -79,37 +80,40 @@ app.post("/login", async(req, res) =>{
 
 
 app.post("/sendCode", async(req, res) =>{
-
-    const {error} = validation(req.body)
-    if (error) return res.status(400).send("Invalid Data")
-
-    userCode = String(randomNumber()) //Add the 6 digit code to the value the global variable
-    const sendToEmail = nodemailer.createTransport({
-        service: "ethereal",
-        auth:{
-            email: process.env.EMAIL,
-            pass: process.env.PASSWORD            
+  
+    // const {error} = validation(req.body)
+    // if (error) return res.status(400).send("Invalid Data")
+    let random = randomNumberFunction()
+    userCode = String(random) //Add the 6 digit code to the value the global variable
+    const emailTransporter = nodemailer.createTransport({
+        host: 'smtp.ethereal.email',
+        port: 587,
+        auth: {
+            user:"sarai.gulgowski@ethereal.email",
+            pass: "zxubYDD8e2hVscNBPd"
         }
-    })
+    });
+        
+
     
     const mailOptions = {
 
-        from: process.env.EMAIL,
+        from: "sarai.gulgowski@ethereal.email",
         to: req.body.email,
         subject: "Hello and Welcome",
         text: `A code has just been sent from nodemailer: ${userCode}`
     }
 
 
-    sendToEmail.sendMail(mailOptions, (err, info) =>{
+    emailTransporter.sendMail(mailOptions, (err, info) =>{
 
         if(err){
                 return res.status(500).send(`Error Sending: ${err}`)
         }
 
         else{
-            return res.status(200).send("Code Sent Successfully" + info)
-        }
+            return res.status(200).send("Code Sent Successfully")
+       }
         
     }) 
 
@@ -118,7 +122,7 @@ app.post("/sendCode", async(req, res) =>{
 
 app.post("/verifyCode", async(req, res) => {
 
-    userCode = randomNumber()
+   
     //1. Verify whether the users 6 digitcode is the same as one we just sent
     if(req.body.code === userCode){
         
@@ -129,14 +133,19 @@ app.post("/verifyCode", async(req, res) => {
         token: _token
     })
 }
+
+userCode = ""
 })
 
 
 app.post("/sendsmscode", async(req, res) =>{
     client.verify.v2.services("VAe5d5e3b679aed18f53ce1985a8bead6f")
     .verifications
-    .create({to: '+447500990864', channel: 'sms'})
-    .then(verification => console.log(verification.sid));
+    .create({to:  "07500990864", channel: 'sms'})
+    .then(verification => {
+        userCode = verification.sid
+        console.log(verification.sid)
+});
 
 })
 
