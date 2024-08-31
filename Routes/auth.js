@@ -1,5 +1,6 @@
 require("dotenv").config()
 
+const jwt = require("jsonwebtoken")
 const joi = require("joi")
 const mongoose = require("mongoose")
 const validation = require("../utils/validation")
@@ -14,9 +15,14 @@ const client = require('twilio')(accountSid, authToken);
 const express = require("express")
 const debug = require("debug")("app:apiDebug")
 const constants = require("../config/constants.js")
+const cors = require("cors")
 require("../Startup/database.js")
 
+
 const app = express()
+app.use(express.json())
+app.use(express.urlencoded({extended: true}))
+app.use(cors())
 let userCode = ""
 
 
@@ -83,13 +89,14 @@ app.post("/sendCode", async(req, res) =>{
   
     // const {error} = validation(req.body)
     // if (error) return res.status(400).send("Invalid Data")
+    console.log(req.body.email)
     let random = randomNumberFunction()
     userCode = String(random) //Add the 6 digit code to the value the global variable
     const emailTransporter = nodemailer.createTransport({
         host: 'smtp.ethereal.email',
         port: 587,
         auth: {
-            user:"sarai.gulgowski@ethereal.email",
+            user: "sarai.gulgowski@ethereal.email",
             pass: "zxubYDD8e2hVscNBPd"
         }
     });
@@ -112,7 +119,11 @@ app.post("/sendCode", async(req, res) =>{
         }
 
         else{
-            return res.status(200).send("Code Sent Successfully")
+            return res.status(200).json({
+
+                message: "Code Sent Successfully",
+                code: userCode
+        })
        }
         
     }) 
@@ -126,7 +137,7 @@ app.post("/verifyCode", async(req, res) => {
     //1. Verify whether the users 6 digitcode is the same as one we just sent
     if(req.body.code === userCode){
         
-        const _token = await jwt.sign(userCode, process.env.PRIVATE_KEY)
+        const _token = await jwt.sign(userCode, "privatekey")
 
         res.status(200).json({
         message: "Code Verification Successful",
@@ -148,6 +159,8 @@ app.post("/sendsmscode", async(req, res) =>{
 });
 
 })
+
+console.log(userCode)
 
 
 const port = process.env.PORT || 4001
